@@ -39,10 +39,45 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
 }
 
+Person.prototype.eat = function(edible) {
+  if(this.stomach.length < 10){
+    this.stomach.push(edible);
+  }
+}
+// give the person the ability to poop
+
+Person.prototype.poop = function(){
+  this.stomach = [];
+}
+
+//toString
+Person.prototype.toString = function(){
+  return `${this.name}, ${this.age}`;
+}
+
+const personOne = new Person('William', 21);
+const personTwo = new Person('Grady', 33);
+const personThree = new Person('Cheree', 41);
+
+console.log(personOne.toString());
+console.log(personTwo.toString());
+console.log(personThree.toString());
+
+personTwo.eat('pineapple');
+personTwo.eat('snails');
+personTwo.eat('sandwich');
+
+console.log(personTwo.stomach);
+
+personTwo.poop();
+
+console.log(personTwo.stomach);
 /*
   TASK 2
     - Write a Car constructor that initializes `model` and `milesPerGallon` from arguments.
@@ -57,10 +92,16 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
 }
 
+Car.prototype.fill = function(gallons){
+  this.tank = this.tank + gallons;
+}
 /*
   TASK 3
     - Write a Baby constructor subclassing Person.
@@ -68,18 +109,32 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
+function Baby(attributes) {
+  Person.call(this, attributes);
+  
+  this.favoriteToy = attributes.favoriteToy;
+}
+Baby.prototype = Object.create(Person.prototype);
 
+Baby.prototype.play = function() {
+ return `Playing with ${this.favoriteToy}`;
 }
 
+const greg = new Baby({
+name: 'Greg',
+age: 5,
+favoriteToy: 'Trike'
+});
+
+greg.play();
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Only applies to objects with methods
+  2. when function is invoked look to the left of the dot
+  3. most commonly implicit binding occurs meaning the method is inside the object.
+  4. if one doesn't bind to anything .this will bind to the window and be undefined if 'use strict' is in action
 */
 
 
